@@ -99,5 +99,10 @@ namespace bankingApp
             AccountBalance = _accountBalance;
             PhoneNum = _phoneNum;
         }
+
+        public Person ()
+        {
+
+        }
     }
 }

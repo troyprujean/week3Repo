@@ -10,19 +10,17 @@ namespace bankingApp
     {
         static string userInput;
 
-        static bool ConfirmNumber (float _parameter)
+        static float ConfirmNumber (float _parameter)
         {
-            float temporary = 0;
             userInput = Console.ReadLine();
-            if (float.TryParse(userInput, out temporary))
+            if (float.TryParse(userInput, out _parameter))
             {
-                _parameter = temporary;
-                return true;
+                return _parameter;
             }
             else
             {
                 Console.WriteLine("Invalid input, please enter a number");
-                return false;
+                return 0;
             }
         }
         
@@ -63,23 +61,15 @@ namespace bankingApp
                 Console.WriteLine("Please select an option:");
                 Console.WriteLine("(1) Create account");
                 Console.WriteLine("(2) Exit");
-                if (!ConfirmNumber(menuChoice))
-                {
-                    isNumber = false;
-                }
-                else
-                {
-                    if (menuChoice > 2)
-                    {
-                        Console.WriteLine("Invalid input, input must be 1 or 2");
-                        isNumber = false;
-                    }
-                    else isNumber = true;
-                }
+                float input = ConfirmNumber(menuChoice);
+
+                isNumber = input != 0;
             }
+
+
             if (menuChoice == 1)
             {
-                Person user1 = new Person("","",0,0,0,0);
+                Person user1 = new Person();
                 Console.Clear();
                 Console.WriteLine("Please enter your first name:");
                 user1.Fname = Console.ReadLine();
