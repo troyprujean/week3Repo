@@ -8,13 +8,41 @@ namespace bankingApp
 {
     class Program
     {
-        static bool confirmNumber (string _input)
+        static string userInput;
+
+        static bool ConfirmNumber (float _parameter)
         {
-            int temporary = 0;
-            string userInput = Console.ReadLine();
-            if (int.TryParse(userInput, out temporary))
+            float temporary = 0;
+            userInput = Console.ReadLine();
+            if (float.TryParse(userInput, out temporary))
             {
+                _parameter = temporary;
                 return true;
+            }
+            else
+            {
+                Console.WriteLine("Invalid input, please enter a number");
+                return false;
+            }
+        }
+        
+
+        static bool ConfirmPin (float _userPin)
+        {
+            float temporary;
+            string userInput = Console.ReadLine();
+            if (float.TryParse(userInput, out temporary))
+            {
+                if (temporary != _userPin)
+                {
+                    Console.WriteLine("Invalid PIN, please try again");
+                    return false;
+                }
+                else
+                {
+                    Console.WriteLine("Authentication successful!");
+                    return true;
+                }
             }
             else
             {
@@ -23,26 +51,31 @@ namespace bankingApp
             }
         }
 
+
+        
         static void Main(string[] args)
         {
             Console.WriteLine("Welcome to the mobile banking app.");
             bool isNumber = false;
-            int menuChoice = 0;
-            int menu2Choice = 0;
-            int temporary = 0;
+            float menuChoice = 0;
             while (!isNumber)
             {
                 Console.WriteLine("Please select an option:");
                 Console.WriteLine("(1) Create account");
                 Console.WriteLine("(2) Exit");
-                string userInput = Console.ReadLine();
-                confirmNumber(userInput);
-                if (menuChoice > 2)
+                if (!ConfirmNumber(menuChoice))
                 {
-                    Console.WriteLine("Invalid input, please try again");
                     isNumber = false;
                 }
-                else isNumber = true;
+                else
+                {
+                    if (menuChoice > 2)
+                    {
+                        Console.WriteLine("Invalid input, input must be 1 or 2");
+                        isNumber = false;
+                    }
+                    else isNumber = true;
+                }
             }
             if (menuChoice == 1)
             {
@@ -56,165 +89,90 @@ namespace bankingApp
                 while (!isNumber)
                 {
                     Console.WriteLine("Please enter a PIN number");
-                    string userInput = Console.ReadLine();
-                    if (int.TryParse(userInput, out temporary))
+                    if (ConfirmNumber(user1.Pin))
                     {
-                        user1.Pin = temporary;
                         isNumber = true;
                     }
-                    else
-                    {
-                        Console.WriteLine("Invalid input, please try again");
-                        isNumber = false;
-                    }
+                    else isNumber = false;
                 }
+
                 isNumber = false;
                 while (!isNumber)
                 {
                     Console.WriteLine("Please enter your account number:");
-                    string userInput = Console.ReadLine();
-                    if (int.TryParse(userInput, out temporary))
+                    if (ConfirmNumber(user1.AccountNum))
                     {
-                        user1.AccountNum = temporary;
                         isNumber = true;
                     }
-                    else
-                    {
-                        Console.WriteLine("Invalid input, please try again");
-                        isNumber = false;
-                    }
+                    else isNumber = false;
                 }
+
                 isNumber = false;
                 while (!isNumber)
                 {
                     Console.WriteLine("Please enter your account balance:");
-                    string userInput = Console.ReadLine();
-                    if (int.TryParse(userInput, out temporary))
+                    if (ConfirmNumber(user1.AccountBalance))
                     {
-                        user1.AccountBalance = temporary;
                         isNumber = true;
                     }
-                    else
-                    {
-                        Console.WriteLine("Invalid input, please try again");
-                        isNumber = false;
-                    }
+                    else isNumber = false;
                 }
+
                 isNumber = false;
                 while (!isNumber)
                 {
                     Console.WriteLine("Please enter your phone number");
-                    string userInput = Console.ReadLine();
-                    if (int.TryParse(userInput, out temporary))
+                    if (ConfirmNumber(user1.PhoneNum))
                     {
-                        user1.PhoneNum = temporary;
                         isNumber = true;
                     }
-                    else
-                    {
-                        Console.WriteLine("Invalid input, please try again");
-                        isNumber = false;
-                    }
+                    else isNumber = false;
                 }
-                isNumber = false;
+                Console.WriteLine($"Congratulations {user1.Fname}, your account has been created successfully");
 
+                isNumber = false;
                 while (!isNumber)
                 {
                     Console.WriteLine("Please select an option:");
                     Console.WriteLine("(1) View funds");
                     Console.WriteLine("(2) Withdraw funds");
                     Console.WriteLine("(3) Logout");
-                    string userInput = Console.ReadLine();
-                    if (int.TryParse(userInput, out temporary))
+                    if (ConfirmNumber(menuChoice))
                     {
-                        if (temporary > 3)
+                        if (menuChoice > 2)
                         {
                             Console.WriteLine("Invalid input, please try again");
                             isNumber = false;
                         }
-                        else
-                        {
-                            menu2Choice = temporary;
-                            isNumber = true;
-                        }
+                        else isNumber = true;
                     }
-                    else
-                    {
-                        Console.WriteLine("Invalid input, please try again");
-                        isNumber = false;
-                    }
+                    else isNumber = false;
                 }
-                int userPIN;
-                switch (menu2Choice)
+                switch (menuChoice)
                 {
                     case 1:
                         isNumber = false;
                         while (!isNumber)
                         {
                             Console.WriteLine("Please enter your PIN number");
-                            string userInput = Console.ReadLine();
-                            if (int.TryParse(userInput, out temporary))
-                            {
-                                if (temporary != user1.Pin)
-                                {
-                                    Console.WriteLine("Invalid PIN, please try again");
-                                }
-                                else
-                                {
-                                    userPIN = temporary;
-                                    isNumber = true;
-                                }
-                            }
-                            else
-                            {
-                                Console.WriteLine("Invalid input, please try again");
-                                isNumber = false;
-                            }
+                            ConfirmPin(user1.Pin);
                         }
-                        Console.WriteLine("Authentication successful");
                         Console.WriteLine($"Your account balance is: ${user1.AccountBalance}");
                         break;
+
                     case 2:
                         isNumber = false;
                         while (!isNumber)
                         {
                             Console.WriteLine("Please enter your PIN number");
-                            string userInput = Console.ReadLine();
-                            if (int.TryParse(userInput, out temporary))
-                            {
-                                if (temporary != user1.Pin)
-                                {
-                                    Console.WriteLine("Invalid PIN, please try again");
-                                }
-                                else
-                                {
-                                    userPIN = temporary;
-                                    isNumber = true;
-                                }
-                            }
-                            else
-                            {
-                                Console.WriteLine("Invalid input, please try again");
-                                isNumber = false;
-                            }
+                            ConfirmPin(user1.Pin);
                         }
-                        Console.WriteLine("Authentication successful");
-                        int withdrawAmount = 0;
+                        float withdrawAmount = 0;
                         isNumber = false;
                         while (!isNumber)
                         {
                             Console.WriteLine("How much would you like to withdraw?");
-                            string userInput = Console.ReadLine();
-                            if (int.TryParse(userInput, out temporary))
-                            {
-                                 withdrawAmount = temporary;
-                                 isNumber = true;
-                            }
-                            else
-                            {
-                                Console.WriteLine("Invalid input, please try again");
-                                isNumber = false;
-                            }
+                            isNumber = ConfirmNumber(withdrawAmount);
                         }
 
                         if (withdrawAmount > user1.AccountBalance)

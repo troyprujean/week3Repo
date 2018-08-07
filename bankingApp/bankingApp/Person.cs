@@ -10,10 +10,10 @@ namespace bankingApp
     {
         private static string fname;
         private static string lname;
-        private static int pin;
+        private static float pin;
         private static float accountNum;
         private static float accountBalance;
-        private static int phoneNum;
+        private static float phoneNum;
 
 
 
@@ -41,7 +41,7 @@ namespace bankingApp
             }
         }
 
-        public int Pin
+        public float Pin
         {
             get
             {
@@ -78,7 +78,7 @@ namespace bankingApp
             }
         }
 
-        public int PhoneNum
+        public float PhoneNum
         {
             get
             {
@@ -90,7 +90,7 @@ namespace bankingApp
             }
         }
 
-        public Person (string _fname, string _lname, int _pin, float _accountNum, float _accountBalance, int _phoneNum)
+        public Person (string _fname, string _lname, float _pin, float _accountNum, float _accountBalance, float _phoneNum)
         {
             Fname = _fname;
             Lname = _lname;
