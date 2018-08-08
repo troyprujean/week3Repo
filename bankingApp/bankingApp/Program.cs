@@ -9,17 +9,17 @@ namespace bankingApp
     class Program
     {
         static string userInput;
-        static float confirmation;
-        static float depositAmount;
-        static float withdrawAmount;
+        static decimal confirmation;
+        static decimal depositAmount;
+        static decimal withdrawAmount;
         static bool isNumber = false;
         static bool repeat = true;
-        static float menuChoice = 0;
+        static decimal menuChoice = 0;
 
         static bool ConfirmNumber (string _userInput)
         {
-            float temporary;
-            if (float.TryParse(_userInput, out temporary))
+            decimal temporary;
+            if (decimal.TryParse(_userInput, out temporary))
             {
                 return true;
             }
@@ -31,12 +31,12 @@ namespace bankingApp
         }
         
 
-        static bool ConfirmPin (float _savedPin)
+        static bool ConfirmPin (decimal _savedPin)
         {
-            float temporary;
+            decimal temporary;
             Console.WriteLine("Please enter your PIN number:");
             userInput = Console.ReadLine();
-            if (float.TryParse(userInput, out temporary))
+            if (decimal.TryParse(userInput, out temporary))
             {
                 if (temporary != _savedPin)
                 {
@@ -56,7 +56,7 @@ namespace bankingApp
             }
         }
 
-        static float DepositFunds()
+        static decimal DepositFunds()
         {
             isNumber = false;
 
@@ -66,7 +66,7 @@ namespace bankingApp
                 userInput = Console.ReadLine();
                 if(ConfirmNumber(userInput))
                 {
-                    depositAmount = float.Parse(userInput);
+                    depositAmount = decimal.Parse(userInput);
                     isNumber = true;
                 }
                 else
@@ -77,7 +77,7 @@ namespace bankingApp
             return depositAmount;
         }
 
-        static float WithdrawFunds(float _balance)
+        static decimal WithdrawFunds(decimal _balance)
         {
             isNumber = false;
 
@@ -87,7 +87,7 @@ namespace bankingApp
                 userInput = Console.ReadLine();
                 if (ConfirmNumber(userInput))
                 {
-                    withdrawAmount = float.Parse(userInput);
+                    withdrawAmount = decimal.Parse(userInput);
                     if (withdrawAmount > _balance)
                     {
                         Console.WriteLine("Error, you have insufficient funds to withdraw that amount, please try again");
@@ -169,7 +169,7 @@ namespace bankingApp
                 userInput = Console.ReadLine();
                 if (ConfirmNumber(userInput))
                 {
-                    user1.Pin = float.Parse(userInput);
+                    user1.Pin = decimal.Parse(userInput);
                     if (user1.Pin < 1000 || user1.Pin > 9999)
                     {
                         Console.WriteLine("Invalid PIN, your PIN must be 4-digits only");
@@ -182,7 +182,7 @@ namespace bankingApp
                         userInput = Console.ReadLine();
                         if (ConfirmNumber(userInput))
                         {
-                            confirmation = float.Parse(userInput);
+                            confirmation = decimal.Parse(userInput);
                             if(confirmation == user1.Pin)
                             {
                                 Console.WriteLine("Congratulations, your PIN has been set!");
@@ -225,7 +225,7 @@ namespace bankingApp
                     userInput = Console.ReadLine();
                     if (ConfirmNumber(userInput))
                     {
-                        menuChoice = float.Parse(userInput);
+                        menuChoice = decimal.Parse(userInput);
                         if(menuChoice > 4)
                         {
                             Console.Clear();
