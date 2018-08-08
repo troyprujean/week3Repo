@@ -71,7 +71,6 @@ namespace bankingApp
                 }
                 else
                 {
-                    Console.WriteLine("Invalid input, please enter a number");
                     isNumber = false;
                 }
             }
@@ -98,25 +97,71 @@ namespace bankingApp
                 }
                 else
                 {
-                    Console.WriteLine("Invalid input, please enter a number");
                     isNumber = false;
                 }
             }
             return withdrawAmount;
         }
 
+        static bool ConfirmString (string _userInput)
+        {
+            if (userInput == "")
+            {
+                Console.WriteLine("You did not enter anything, please try again");
+                return false;
+            }
+            else if (userInput.Length > 20)
+            {
+            Console.WriteLine("Your input must be less with 20 characters or less");
+            return false;
+            }
+            else return true;
+        }
 
         static void Main(string[] args)
         {
             Person user1 = new Person();
             Console.WriteLine("Welcome to the PoorBank ATM");
             Console.WriteLine("===========================");
-            Console.WriteLine("Please enter your first name:");
-            user1.Fname = Console.ReadLine();
-            Console.WriteLine("Please enter your last name:");
-            user1.Lname = Console.ReadLine();
-            Console.WriteLine("Please enter your phone number:");
-            user1.PhoneNum = Console.ReadLine();
+            while(!isNumber)
+            {
+                Console.WriteLine("Please enter your first name:");
+                userInput = Console.ReadLine();
+                if (ConfirmString(userInput))
+                {
+                    user1.Fname = userInput;
+                    isNumber = true;
+                }
+                else isNumber = false;
+            }
+            isNumber = false;
+
+            while (!isNumber)
+            {
+                Console.WriteLine("Please enter your last name:");
+                userInput = Console.ReadLine();
+                if (ConfirmString(userInput))
+                {
+                    user1.Lname = userInput;
+                    isNumber = true;
+                }
+                else isNumber = false;
+            }
+            isNumber = false;
+
+            while (!isNumber)
+            {
+                Console.WriteLine("Please enter your phone number:");
+                userInput = Console.ReadLine();
+                if (ConfirmString(userInput))
+                {
+                    user1.PhoneNum = userInput;
+                    isNumber = true;
+                }
+                else isNumber = false;
+            }
+            isNumber = false;
+            
             Console.Clear();
             while (!isNumber)
             {
@@ -162,7 +207,7 @@ namespace bankingApp
             Console.WriteLine($"Congratulations {user1.Fname}, your account has been created successfully");
             Console.WriteLine($"Your new account number is: {user1.AccountNum}");
             Console.WriteLine("=========================================");
-            Console.WriteLine($"Your account balance is: ${user1.AccountBalance}");
+            Console.WriteLine($"Your account balance is: {user1.AccountBalance:C}");
             Console.WriteLine("=========================================");
             Console.WriteLine("press enter to continue");
             Console.ReadLine();
@@ -205,8 +250,8 @@ namespace bankingApp
                         }
                         user1.AccountBalance += DepositFunds();
                         Console.Clear();
-                        Console.WriteLine($"${depositAmount} was deposited into account number: {user1.AccountNum}");
-                        Console.WriteLine($"the balance is now ${user1.AccountBalance}");
+                        Console.WriteLine($"{depositAmount:C} was deposited into account number: {user1.AccountNum}");
+                        Console.WriteLine($"the balance is now {user1.AccountBalance:C}");
                         Console.WriteLine("=========================================");
                         Console.WriteLine("press enter to continue");
                         Console.ReadLine();
@@ -221,8 +266,8 @@ namespace bankingApp
                         }
                         user1.AccountBalance = user1.AccountBalance - WithdrawFunds(user1.AccountBalance);
                         Console.Clear();
-                        Console.WriteLine($"${withdrawAmount} was withdrawn from account number: {user1.AccountNum}");
-                        Console.WriteLine($"the balance is now ${user1.AccountBalance}");
+                        Console.WriteLine($"{withdrawAmount:C} was withdrawn from account number: {user1.AccountNum}");
+                        Console.WriteLine($"the balance is now {user1.AccountBalance:C}");
                         Console.WriteLine("=========================================");
                         Console.WriteLine("press enter to continue");
                         Console.ReadLine();
@@ -237,7 +282,7 @@ namespace bankingApp
                         }
                         Console.Clear();
                         Console.WriteLine($"Account holder: {user1.Fname} {user1.Lname}\nPhone number {user1.PhoneNum}\n\n");
-                        Console.WriteLine($"Account number: {user1.AccountNum}\n\nAccount balance ${user1.AccountBalance}");
+                        Console.WriteLine($"Account number: {user1.AccountNum}\n\nAccount balance {user1.AccountBalance:C}");
                         Console.WriteLine("=========================================");
                         Console.WriteLine("press enter to continue");
                         Console.ReadLine();
