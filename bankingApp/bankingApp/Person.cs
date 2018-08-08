@@ -10,10 +10,11 @@ namespace bankingApp
     {
         private static string fname;
         private static string lname;
+        private static string phoneNum;
         private static float pin;
-        private static float accountNum;
+        private static int accountNum;
         private static float accountBalance;
-        private static float phoneNum;
+        
 
 
 
@@ -53,7 +54,7 @@ namespace bankingApp
             }
         }
 
-        public float AccountNum
+        public int AccountNum
         {
             get
             {
@@ -65,7 +66,12 @@ namespace bankingApp
             }
         }
         
-        
+        public int RandomNumber(int min, int max)
+        {
+            Random random = new Random();
+            return random.Next(min, max);
+        }
+
         public float AccountBalance
         {
             get
@@ -78,7 +84,7 @@ namespace bankingApp
             }
         }
 
-        public float PhoneNum
+        public string PhoneNum
         {
             get
             {
@@ -90,7 +96,7 @@ namespace bankingApp
             }
         }
 
-        public Person (string _fname, string _lname, float _pin, float _accountNum, float _accountBalance, float _phoneNum)
+        public Person (string _fname, string _lname, float _pin, int _accountNum, float _accountBalance, string _phoneNum)
         {
             Fname = _fname;
             Lname = _lname;

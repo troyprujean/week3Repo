@@ -9,29 +9,36 @@ namespace bankingApp
     class Program
     {
         static string userInput;
+        static float confirmation;
+        static float depositAmount;
+        static float withdrawAmount;
+        static bool isNumber = false;
+        static bool repeat = true;
+        static float menuChoice = 0;
 
-        static float ConfirmNumber (float _parameter)
+        static bool ConfirmNumber (string _userInput)
         {
-            userInput = Console.ReadLine();
-            if (float.TryParse(userInput, out _parameter))
+            float temporary;
+            if (float.TryParse(_userInput, out temporary))
             {
-                return _parameter;
+                return true;
             }
             else
             {
                 Console.WriteLine("Invalid input, please enter a number");
-                return 0;
+                return false;
             }
         }
         
 
-        static bool ConfirmPin (float _userPin)
+        static bool ConfirmPin (float _savedPin)
         {
             float temporary;
-            string userInput = Console.ReadLine();
+            Console.WriteLine("Please enter your PIN number:");
+            userInput = Console.ReadLine();
             if (float.TryParse(userInput, out temporary))
             {
-                if (temporary != _userPin)
+                if (temporary != _savedPin)
                 {
                     Console.WriteLine("Invalid PIN, please try again");
                     return false;
@@ -49,136 +56,202 @@ namespace bankingApp
             }
         }
 
-
-        
-        static void Main(string[] args)
+        static float DepositFunds()
         {
-            Console.WriteLine("Welcome to the mobile banking app.");
-            bool isNumber = false;
-            float menuChoice = 0;
+            isNumber = false;
+
             while (!isNumber)
             {
-                Console.WriteLine("Please select an option:");
-                Console.WriteLine("(1) Create account");
-                Console.WriteLine("(2) Exit");
-                float input = ConfirmNumber(menuChoice);
-
-                isNumber = input != 0;
+                Console.WriteLine("How much would you like to deposit?");
+                userInput = Console.ReadLine();
+                if(ConfirmNumber(userInput))
+                {
+                    depositAmount = float.Parse(userInput);
+                    isNumber = true;
+                }
+                else
+                {
+                    Console.WriteLine("Invalid input, please enter a number");
+                    isNumber = false;
+                }
             }
+            return depositAmount;
+        }
 
+        static float WithdrawFunds(float _balance)
+        {
+            isNumber = false;
 
-            if (menuChoice == 1)
+            while (!isNumber)
             {
-                Person user1 = new Person();
-                Console.Clear();
-                Console.WriteLine("Please enter your first name:");
-                user1.Fname = Console.ReadLine();
-                Console.WriteLine("Please enter your last name:");
-                user1.Lname = Console.ReadLine();
-                isNumber = false;
-                while (!isNumber)
+                Console.WriteLine("How much would you like to withdraw?");
+                userInput = Console.ReadLine();
+                if (ConfirmNumber(userInput))
                 {
-                    Console.WriteLine("Please enter a PIN number");
-                    if (ConfirmNumber(user1.Pin))
+                    withdrawAmount = float.Parse(userInput);
+                    if (withdrawAmount > _balance)
                     {
-                        isNumber = true;
-                    }
-                    else isNumber = false;
-                }
-
-                isNumber = false;
-                while (!isNumber)
-                {
-                    Console.WriteLine("Please enter your account number:");
-                    if (ConfirmNumber(user1.AccountNum))
-                    {
-                        isNumber = true;
-                    }
-                    else isNumber = false;
-                }
-
-                isNumber = false;
-                while (!isNumber)
-                {
-                    Console.WriteLine("Please enter your account balance:");
-                    if (ConfirmNumber(user1.AccountBalance))
-                    {
-                        isNumber = true;
-                    }
-                    else isNumber = false;
-                }
-
-                isNumber = false;
-                while (!isNumber)
-                {
-                    Console.WriteLine("Please enter your phone number");
-                    if (ConfirmNumber(user1.PhoneNum))
-                    {
-                        isNumber = true;
-                    }
-                    else isNumber = false;
-                }
-                Console.WriteLine($"Congratulations {user1.Fname}, your account has been created successfully");
-
-                isNumber = false;
-                while (!isNumber)
-                {
-                    Console.WriteLine("Please select an option:");
-                    Console.WriteLine("(1) View funds");
-                    Console.WriteLine("(2) Withdraw funds");
-                    Console.WriteLine("(3) Logout");
-                    if (ConfirmNumber(menuChoice))
-                    {
-                        if (menuChoice > 2)
-                        {
-                            Console.WriteLine("Invalid input, please try again");
-                            isNumber = false;
-                        }
-                        else isNumber = true;
-                    }
-                    else isNumber = false;
-                }
-                switch (menuChoice)
-                {
-                    case 1:
+                        Console.WriteLine("Error, you have insufficient funds to withdraw that amount, please try again");
                         isNumber = false;
-                        while (!isNumber)
-                        {
-                            Console.WriteLine("Please enter your PIN number");
-                            ConfirmPin(user1.Pin);
-                        }
-                        Console.WriteLine($"Your account balance is: ${user1.AccountBalance}");
-                        break;
+                    }
+                    else isNumber = true;
+                }
+                else
+                {
+                    Console.WriteLine("Invalid input, please enter a number");
+                    isNumber = false;
+                }
+            }
+            return withdrawAmount;
+        }
 
-                    case 2:
-                        isNumber = false;
-                        while (!isNumber)
-                        {
-                            Console.WriteLine("Please enter your PIN number");
-                            ConfirmPin(user1.Pin);
-                        }
-                        float withdrawAmount = 0;
-                        isNumber = false;
-                        while (!isNumber)
-                        {
-                            Console.WriteLine("How much would you like to withdraw?");
-                            isNumber = ConfirmNumber(withdrawAmount);
-                        }
 
-                        if (withdrawAmount > user1.AccountBalance)
+        static void Main(string[] args)
+        {
+            Person user1 = new Person();
+            Console.WriteLine("Welcome to the PoorBank ATM");
+            Console.WriteLine("===========================");
+            Console.WriteLine("Please enter your first name:");
+            user1.Fname = Console.ReadLine();
+            Console.WriteLine("Please enter your last name:");
+            user1.Lname = Console.ReadLine();
+            Console.WriteLine("Please enter your phone number:");
+            user1.PhoneNum = Console.ReadLine();
+            Console.Clear();
+            while (!isNumber)
+            {
+                Console.WriteLine("Please enter a 4-digit PIN");
+                userInput = Console.ReadLine();
+                if (ConfirmNumber(userInput))
+                {
+                    user1.Pin = float.Parse(userInput);
+                    if (user1.Pin < 1000 || user1.Pin > 9999)
+                    {
+                        Console.WriteLine("Invalid PIN, your PIN must be 4-digits only");
+                        user1.Pin = 0;
+                    }
+                    else
+                    {
+                        Console.Clear();
+                        Console.WriteLine("Please confirm your PIN");
+                        userInput = Console.ReadLine();
+                        if (ConfirmNumber(userInput))
                         {
-                            Console.WriteLine("Insufficient funds to withdraw that amount");
+                            confirmation = float.Parse(userInput);
+                            if(confirmation == user1.Pin)
+                            {
+                                Console.WriteLine("Congratulations, your PIN has been set!");
+                                isNumber = true;
+                            }
+                            else
+                            {
+                                Console.WriteLine("Your PIN's did not match, please try again");
+                                isNumber = false;
+                            }
                         }
                         else
                         {
-                            user1.AccountBalance = user1.AccountBalance - withdrawAmount;
-                            Console.WriteLine($"Your account balance is now: ${user1.AccountBalance}");
+                            isNumber = false;
                         }
-                        break;
-                    case 3: break;
+                    }
                 }
-
             }
+            isNumber = false;
+            user1.AccountNum = user1.RandomNumber(10000000, 99999999);
+            Console.Clear();
+            Console.WriteLine($"Congratulations {user1.Fname}, your account has been created successfully");
+            Console.WriteLine($"Your new account number is: {user1.AccountNum}");
+            Console.WriteLine("=========================================");
+            Console.WriteLine($"Your account balance is: ${user1.AccountBalance}");
+            Console.WriteLine("=========================================");
+            Console.WriteLine("press enter to continue");
+            Console.ReadLine();
+            Console.Clear();
+
+            while (repeat) 
+            {
+                while (!isNumber)
+                {
+                    Console.WriteLine("What would you like to do next?");
+                    Console.WriteLine("(1) Deposit Funds");
+                    Console.WriteLine("(2) Withdraw Funds");
+                    Console.WriteLine("(3) View Account");
+                    Console.WriteLine("(4) Logout");
+                    userInput = Console.ReadLine();
+                    if (ConfirmNumber(userInput))
+                    {
+                        menuChoice = float.Parse(userInput);
+                        if(menuChoice > 4)
+                        {
+                            Console.Clear();
+                            Console.WriteLine("Invalid input");
+                            isNumber = false;
+                        }
+                        else
+                        {
+                            Console.Clear();
+                            isNumber = true;
+                        }
+                    }
+                    else isNumber = false;
+                }
+                isNumber = false;
+                switch (menuChoice)
+                {
+                    case 1:
+                        while (!isNumber)
+                        {
+                            isNumber = ConfirmPin(user1.Pin);
+                        }
+                        user1.AccountBalance += DepositFunds();
+                        Console.Clear();
+                        Console.WriteLine($"${depositAmount} was deposited into account number: {user1.AccountNum}");
+                        Console.WriteLine($"the balance is now ${user1.AccountBalance}");
+                        Console.WriteLine("=========================================");
+                        Console.WriteLine("press enter to continue");
+                        Console.ReadLine();
+                        Console.Clear();
+                        menuChoice = 0;
+                        repeat = true;
+                        break;
+                    case 2:
+                        while (!isNumber)
+                        {
+                            isNumber = ConfirmPin(user1.Pin);
+                        }
+                        user1.AccountBalance = user1.AccountBalance - WithdrawFunds(user1.AccountBalance);
+                        Console.Clear();
+                        Console.WriteLine($"${withdrawAmount} was withdrawn from account number: {user1.AccountNum}");
+                        Console.WriteLine($"the balance is now ${user1.AccountBalance}");
+                        Console.WriteLine("=========================================");
+                        Console.WriteLine("press enter to continue");
+                        Console.ReadLine();
+                        Console.Clear();
+                        menuChoice = 0;
+                        repeat = true;
+                        break;
+                    case 3:
+                        while (!isNumber)
+                        {
+                            isNumber = ConfirmPin(user1.Pin);
+                        }
+                        Console.Clear();
+                        Console.WriteLine($"Account holder: {user1.Fname} {user1.Lname}\nPhone number {user1.PhoneNum}\n\n");
+                        Console.WriteLine($"Account number: {user1.AccountNum}\n\nAccount balance ${user1.AccountBalance}");
+                        Console.WriteLine("=========================================");
+                        Console.WriteLine("press enter to continue");
+                        Console.ReadLine();
+                        Console.Clear();
+                        menuChoice = 0;
+                        repeat = true;
+                        break;
+                    case 4:
+                        Console.WriteLine("Thank you for using the PoorBank ATM, i hope you have more money next time :)");
+                        repeat = false;
+                        break;
+                }
+            }
+            return;
         }
     }
 }
